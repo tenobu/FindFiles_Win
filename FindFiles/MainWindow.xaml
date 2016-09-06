@@ -1,0 +1,158 @@
+﻿<Window x:Class="FindFiles.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="278" Width="525" MinWidth="500" MinHeight="200"
+		Loaded="Window_Loaded" Closing="Window_Closing">
+
+	<Window.Resources>
+
+		<DataTemplate x:Key="DataTemplate1">
+			<Grid Height="100">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="100"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Image Source="{Binding Path=Icon}"
+					   HorizontalAlignment="Left" Height="80" Margin="10,10,0,0" VerticalAlignment="Top" Width="80"/>
+				<Label Content="{Binding Path=File}"
+					   Grid.Column="1" HorizontalAlignment="Stretch"
+					   Margin="10,10,10,0" VerticalAlignment="Top" Width="Auto"/>
+				<Label Content="{Binding Path=SizeS}"
+					   Grid.Column="1" HorizontalAlignment="Stretch"
+					   Margin="10,0,10,10" VerticalAlignment="Bottom" Width="Auto"/>
+				<!--TextBlock Text="{Binding Path=Path}"
+						   Grid.Column="1" HorizontalAlignment="Stretch"
+						   Margin="10,35,10,10" VerticalAlignment="Stretch" Height="Auto"/-->
+			</Grid>
+		</DataTemplate>
+
+		<!--DataTemplate x:Key="DataTemplate2">
+			<Grid Height="100">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="100"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Image Source="{Binding Path=Icon}"
+					   HorizontalAlignment="Left" Height="80" Margin="10,10,0,0" VerticalAlignment="Top" Width="80"/>
+				<Label Content="{Binding Path=File}"
+					   Grid.Column="1" HorizontalAlignment="Stretch"
+					   Margin="10,10,10,0" VerticalAlignment="Top" Width="Auto"/>
+			</Grid>
+		</-->
+
+		<!--Style x:Key="DataTemplate2" TargetType="{x:Type ListBox}">
+			<Setter Property="ItemTemplate">
+				<Setter.Value>
+					<DataTemplate>
+						<Border BorderBrush="Black" BorderThickness="1" Margin="10" Background="White">
+							<Border.BitmapEffect>
+								<DropShadowBitmapEffect Color="Black" Direction="315" ShadowDepth="5"
+														Softness="0.25" Opacity="0.5"/>
+							</Border.BitmapEffect>
+							<StackPanel Margin="5">
+								<Image Source="{Binding Path=Icon}" Stretch="Fill" Width="72" Height="95" />
+								<TextBlock Text="{Binding Path=File}" HorizontalAlignment="Center" Margin="2" />
+							</StackPanel>
+						</Border>
+					</DataTemplate>
+				</Setter.Value>
+				</Setter>
+				<Setter Property="ItemsPanel">
+					<Setter.Value>
+						<ItemsPanelTemplate>
+							<WrapPanel />
+						</ItemsPanelTemplate>
+					</Setter.Value>
+				</Setter>
+			<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+		</-->
+	</Window.Resources>
+
+	<Grid Margin="0,0,0,-5">
+
+		<Image HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" VerticalAlignment="Top" Width="23"
+			   Source="Images\folder.png"/>
+		<Label Name="label_FindFolder"
+			   Content="C:\" Height="23" Margin="38,9,90,0" VerticalAlignment="Top" FontFamily="Calibri"/>
+		<Button Name="button_FindFolder"
+				Width="75" Margin="0,10,10,0" HorizontalAlignment="Right" Height="23" VerticalAlignment="Top"
+				Click="button_FindFolder_Click">
+			<StackPanel  Orientation="Horizontal">
+				<Image Source="Images/folder.png"/>
+				<TextBlock Text=" Folder" VerticalAlignment="Center"/>
+			</StackPanel>
+		</Button>
+
+		<Image HorizontalAlignment="Left" Height="23" Margin="10,39,0,0" VerticalAlignment="Top" Width="23"
+			   Source="Images\file_extension_chm.png"/>
+		<!--TextBox Name="textBox_FindFile"
+				 Height="23" Margin="38,39,90,0" TextWrapping="Wrap" VerticalAlignment="Top"
+				 KeyDown="textBox_FindFile_KeyDown" KeyUp="textBox_FindFile_KeyUp"/-->
+		<ComboBox Name="comboBox_FindFile" Height="25" Margin="38,37,90,0" VerticalAlignment="Top"
+				  IsEditable="True" TextSearch.TextPath="Text"
+				  KeyUp="comboBox_FindFile_KeyUp">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Text}" Margin="2.5"/>
+						<TextBlock Text="{Binding Count}" Margin="2.5"/>
+					</StackPanel>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+
+		<Button Name="button_FileFind"
+				Width="75" Margin="0,39,10,0"
+				Click="button_FileFind_Click" HorizontalAlignment="Right" Height="23" VerticalAlignment="Top">
+			<StackPanel  Orientation="Horizontal">
+				<Image Source="Images/find.png"/>
+				<TextBlock Text=" Find" VerticalAlignment="Center"/>
+			</StackPanel>
+		</Button>
+
+		<Button Name="button_List_1"
+				Width="23" Height="25"
+				Click="button_List_1_Click" Margin="10,67,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+			<StackPanel>
+				<Image Source="Images/find.png" />
+			</StackPanel>
+		</Button>
+		<Button Name="button_List_2"
+				Width="23" Height="25"
+				Click="button_List_2_Click" Margin="10,97,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+			<StackPanel>
+				<Image Source="Images/find.png" />
+			</StackPanel>
+		</Button>
+		<Button Name="button_List_3"
+				Width="23" Height="25"
+				Click="button_List_3_Click" Margin="10,127,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+			<StackPanel>
+				<Image Source="Images/find.png" />
+			</StackPanel>
+		</Button>
+
+		<ListBox Name="listBox_Find"
+				 Margin="38,67,10,39" Visibility="Visible" ItemsSource="{Binding Path=Files}"
+				 ItemTemplate="{DynamicResource DataTemplate1}" SelectionMode="Single"
+				 MouseUp="listBox_Find_MouseUp" MouseDoubleClick="listBox_Find_MouseDoubleClick">
+		</ListBox>
+		
+		<!--ListBox Name="listBox_Contacts"
+				 Margin="38,67,10,39" Visibility="Hidden" ItemsSource="{Binding Path=Files}"
+				 ItemTemplate="{DynamicResource DataTemplate2}" SelectionMode="Multiple">
+		</-->
+		<Button Name="button_Copy"
+				Content="Copy" HorizontalAlignment="Right" Margin="0,0,90,10" Width="75"
+				Click="button_Copy_Click" Height="24" VerticalAlignment="Bottom"/>
+		<Button Name="button_AddressCopy"
+				Content="Address" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"
+				Click="button_AddressCopy_Click"/>
+
+		<Label Content="Find" HorizontalAlignment="Left" Margin="10,0,0,6" VerticalAlignment="Bottom"/>
+		<Label Name="label_FindCount"
+			   Content="0" HorizontalAlignment="Left" Margin="50,0,0,6"
+			   Width="120" Height="28" VerticalAlignment="Bottom"/>
+
+	</Grid>
+</Window>
